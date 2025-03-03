@@ -5,7 +5,7 @@ push_repo() {
   echo "Pushing repository to Git..."
   git add .
   timestamp=$(date +'%m/%d/%Y/%H/%M/%S')
-  git commit -m "Automated commit - $timestamp"
+  git commit -m "$timestamp"
   git push origin main
   echo "Repository pushed successfully."
 }
@@ -43,8 +43,8 @@ while true; do
       ;;
     3)
       echo "Exiting..."
-      exit 0
       clear
+      exit 0
       ;;
     *)
       echo "Invalid choice. Please try again."
