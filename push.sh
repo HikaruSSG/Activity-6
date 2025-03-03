@@ -5,8 +5,20 @@ push_repo() {
   echo "Pushing repository to Git..."
   git add .
   timestamp=$(date +'%m/%d/%Y/%H/%M/%S')
-  git commit -m "$timestamp"
+  commit_message="Automated commit - $timestamp"
+  git commit -m "$commit_message"
   git push origin main
+
+  # Save commit message to commits.json
+  if [ ! -f commits.json ]; then
+    echo "[" > commits.json
+  else
+    # Check if the file is empty
+    if [ -s commits.json ]; then
+      echo "," >> commits.json
+    fi
+  fi
+  echo "{ \"message\": \"$commit_message\" }" >> commits.json
   echo "Repository pushed successfully."
 }
 
@@ -44,6 +56,7 @@ while true; do
     3)
       echo "Exiting..."
       clear
+      echo "]" >> commits.json
       exit 0
       ;;
     *)
