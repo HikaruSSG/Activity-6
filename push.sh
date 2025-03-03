@@ -12,10 +12,20 @@ push_repo() {
   # Save commit message to commits.json
   if [ ! -f commits.json ]; then
     echo "[" > commits.json
+    first_commit=true
   else
+    first_commit=false
+  fi
+
+  if [ "$first_commit" = false ]; then
     # Check if the file is empty
     if [ -s commits.json ]; then
-      echo "," >> commits.json
+      # Get the size of the file
+      file_size=$(stat -c%s commits.json)
+      # Subtract 1 to account for the last character
+      end_pos=$((file_size - 1))
+      # Use sed to insert the comma before the last character
+      sed -i "${end_pos}i," commits.json
     fi
   fi
   echo "{ \"message\": \"$commit_message\" }" >> commits.json
